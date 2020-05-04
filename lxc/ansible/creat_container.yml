@@ -1,0 +1,36 @@
+---
+- hosts: local
+  connection: local
+  remote_user: jordy
+  become: yes
+  become_method: sudo
+
+  tasks:
+    - name: Install PIP 2
+      apt:
+        pkg:
+          - python-pip
+          - lxc-dev
+    - name: Install python2-lxc
+      pip:
+        name: lxc-python2
+    - name: create container C1
+      lxc_container:
+        name: "{{ item.name }}"
+        template: debian
+        state: started
+        template_options: --release jessie
+        container_config:
+          - lxc-cgroup.cpuset.cpus = 0
+          - lxc.cgroup.memory.soft_limit_in_bytes=268435456
+          - lxc.net.0.type = veth
+          - lxc.net.0.link = br
+          - lxc.net.0.flags = up
+          - lxc.net.0.veth.pair = br-"{{ item.name }}"
+          - lxc.net.0.ipv4.address = "{{ item.IP }}"
+          - lxc.net.0.ipv4.gateway = 192.168.1.254
+      with_items:
+        - { name: "C1", IP: "192.168.1.1" }
+        - { name: "C2", IP: "192.168.1.2" }
+        - { name: "C3", IP: "192.168.1.13" }
+   

@@ -1,0 +1,17 @@
+---
+- hosts: local
+  connection: local
+  remote_user: jordy
+  become: yes
+  become_method: sudo
+
+  tasks:
+  - name: Setup Bridge
+    shell: ip link add name br type bridge
+  - name: Setup Bridge IP Adress
+    shell: ip addr add 192.168.1.254/24 dev br
+  - name: Setup Bridge UP
+    shell: ip link set dev br up
+  - name: Setup Bridge
+    shell: iptables -t nat -A POSTROUTING -o enp0s3 -j MASQUERADE
+      

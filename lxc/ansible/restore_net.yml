@@ -1,0 +1,12 @@
+---
+- hosts: local
+  connection: local
+  remote_user: root
+  become: yes
+
+  tasks:
+  - name: Erase iptables rules
+    shell: iptables -F
+  - name: Delete Bridge
+    shell: ip link delete dev br
+      

@@ -1,0 +1,11 @@
+---
+- hosts: LXC
+  connection: local
+  remote_user: root
+  become: yes
+
+  tasks:
+    - name: Create username superv
+      user: 
+        name: superv
+        password: superv

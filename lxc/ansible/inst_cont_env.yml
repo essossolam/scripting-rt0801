@@ -1,0 +1,14 @@
+---
+- hosts: local
+  connection: local
+  remote_user: jordy
+  become: yes
+  become_method: sudo
+
+  tasks:
+  - name: Install LXC environement
+    apt:
+      pkg:
+        - lxc
+        - lxc-templates
+        - bridge-utils
