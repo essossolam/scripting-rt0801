@@ -1,3 +1,3 @@
 # scripting-rt0801
 
-## SHELL - PYTHON - CHEF - ANSIBLE
+## SHELL - PYTHON - SALT - ANSIBLE
