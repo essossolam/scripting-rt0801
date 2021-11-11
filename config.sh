@@ -12,5 +12,5 @@ then
   systemctl restart systemd-logind.service
   #if [ $NIC == ""  ]
 else
- echo "Nombre de paremetre invalide!!!"
+ echo "Nombre de parametre invalide!!!"
 fi
