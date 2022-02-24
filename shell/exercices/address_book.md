@@ -2,7 +2,7 @@
 
 Okay, it's boring, but here's your exercise for today:
 Create an addressbook program using the bourne or bourne-again shell.
-It should use functions to perform the required tasks. It should be menu-based, allowing you the options of:
+**It should use functions to perform the required tasks. It should be menu-based**, allowing you the options of:
 
 1. Search address book
 2. Add entries
@@ -19,7 +19,9 @@ When the user searches for "Smith", the script should identify and display all "
 Input the data (Name, Surname, Email, Phone, etc).
 If it appears to be a duplicate, for bonus points offer to edit the existing record.
 Save the record into the data file when the user confirms.
-Remove
+
+## Remove
+
 Enter search criteria, narrow it down to one, confirm, then remove that record.
 
 ## Edit
@@ -46,7 +48,7 @@ Remove the old record, and add the new one. Alternatively, edit the existing rec
 ## Hints / Things to think about
 
 * Suggested record format: Use colons to separate fields.
-John Smith: 54321:john@smith.example.com
+John Smith:54321:john@smith.example.com
 * That way you can use "cut -d:" to read fields.
 * Think about using IFS as an alternative to this method.
 * Think about using space `(" ")` to separate fields, and convert any spaces in the input to underscores `("_")` then convert them back again for display.

@@ -11,9 +11,9 @@
 #
 # Error Log: 
 #
-
-export ADDRESS_BOOK=~/scripting/shell/exercices/solutions/address_book/.address_book
-
+SCRIPT_HOME=~/scripting/shell/exercices/solutions/address_book
+export ADDRESS_BOOK=$SCRIPT_HOME/.address_book
+oldIFS=$IFS
 # User confirmation
 confirm(){
     echo -en "$@ - (Y/n):"
@@ -34,14 +34,21 @@ show_title(){
 
 # Diplay record(s)
 display() {
+    local lineNbr=0
+    local line
+    local input
     echo "Found ($#) record(s)."
+    IFS=' '
     if [[ $# -gt 0 ]]; then
         for line in $*; do
+            let ++lineNbr
+            # print line number
+            echo -n "${lineNbr}. " 
             IFS=':'
-            echo $line
-            IFS=oldIFS
+            echo "${line}"
         done
     fi
+    IFS=$oldIFS
 }
 
 perform_search() {
@@ -53,8 +60,30 @@ search_items() {
     show_title "SEARCH"
     echo -en "Enter your keywords: "
     read key
-    display $(perform_search "$key")
+    display "$(perform_search $key)"
 }
+
+select_item() {
+    local choice
+    local response
+    local tmp_file
+    # Create a tmp file
+    tmp_file=$(mktemp --tmpdir="$SCRIPT_HOME" search.XXXXXXXXX)
+    # Fullfil tmp file with user search val
+    IFS=' '
+    for line in $1; do
+        echo "${line}" >> "${tmp_file}"
+    done
+    IFS=$oldIFS
+
+    # Get the desired line 
+    response=$(awk "NR==${2}{ print; exit }" "${tmp_file}")
+    # Delete the tmp file created
+    rm "${tmp_file}"
+
+    echo "$response"
+}
+
 # Function to save item into a file
 save_into_file(){
     echo -e "$1\n" >> $ADDRESS_BOOK
@@ -73,6 +102,20 @@ parse_values() {
         fi
     done
     echo $parsed
+}
+# Function to remove one entry
+remove_item() {
+    local response
+    show_title "SEARCH"
+    echo -en "Enter your keywords: "
+    read key
+    #
+    response=$(perform_search "$key")
+    display "$response"
+    echo -en "Please enter the line number of your desired entry: "
+    read choice
+    response=$(select_item "${response}" "${choice}")
+    display "${response}"
 }
 
 edit_item() {
@@ -118,6 +161,7 @@ process_menu() {
         1) search_items ;;
         2) add_item ;;
         3) edit_item ;;
+        4) remove_item ;;
         *) echo "Sorry no matching choice" ;;
     esac
 }

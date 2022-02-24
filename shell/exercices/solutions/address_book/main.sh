@@ -14,20 +14,27 @@
 
 set -e
 
-#Utils function script location
-source ~/scripting/shell/exercices/solutions/address_book/utils.sh
+# Utils function script location
+UTILS=~/scripting/shell/exercices/solutions/address_book/utils.sh
+. "${UTILS}"
+
+# [TODO]
+# Function to print usage of this script
+usage(){
+    echo "On progress..."
+}
 
 main(){
-    echo -en "******"
-    echo -en "ADDRESS BOOK MENU"
-    echo "******"
+    # Show menu title
+    show_title "ADDRESS BOOK MENU"
     echo "1. Search address book"
-    echo "2. Add entries"
-    echo "3. Remove / edit entries"
+    echo "2. Add entry"
+    echo "3. Edit entry"
+    echo "4. Remove entry"
     echo -en "Enter your choice: "
-    read choice
-    #Call process_menu with user choice
-    process_menu $choice
+    read -r choice
+    # Call process_menu with user choice
+    process_menu "$choice"
 
     exit 0
 }
